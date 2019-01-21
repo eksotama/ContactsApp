@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:ContactsApp"
+             xmlns:viewModels="clr-namespace:ContactsApp.ViewModels"
+             xmlns:viewModelBase="clr-namespace:ContactsApp.ViewModels.Base;assembly=ContactsApp"
+             x:Class="ContactsApp.Views.MainPageView"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="True">
+    <!--<ContentPage.BindingContext>
+        <viewModels:MainPageViewModel />
+    </ContentPage.BindingContext>-->
+
+    <StackLayout Padding="20">
+        <ListView x:Name="lvContacts" 
+                  ItemsSource="{Binding Contacts}"
+                  ItemSelected="LvContacts_ItemSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Name}" 
+                              Detail="{Binding Number}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button Text="Add Contact" Command="{Binding EditContact}" />
+    </StackLayout>
+
+</ContentPage>
