@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading.Tasks;
 using ContactsApp.Models;
 using SQLite;
@@ -28,24 +26,32 @@ namespace ContactsApp.Services
             return new ObservableCollection<Contact>(contacts);
         }
 
-        public Task AddContactAsync(Contact contact)
+        public async Task<Contact> GetContactAsync(int contactId)
         {
-            throw new NotImplementedException();
+            return await connection.Table<Contact>().Where(c => c.Id == contactId).FirstOrDefaultAsync();
         }
 
-        public Task DeleteContactAsync(Contact contact)
+        public async Task AddContactAsync(Contact contact)
         {
-            throw new NotImplementedException();
+            //basic validation to ensure a name was entered
+            if (string.IsNullOrEmpty(contact.Name))
+                throw new Exception("Valid name required");
+
+            await connection.InsertAsync(contact);
         }
 
-        public Task<Contact> GetContactAsync(int contactId)
+        public async Task UpdateContactAsync(Contact contact)
         {
-            throw new NotImplementedException();
+            //basic validation to ensure a name was entered
+            if (string.IsNullOrEmpty(contact.Name))
+                throw new Exception("Valid name required");
+
+            await connection.UpdateAsync(contact);
         }
 
-        public Task UpdateContactAsync(Contact contact)
+        public async Task DeleteContactAsync(Contact contact)
         {
-            throw new NotImplementedException();
+            await connection.DeleteAsync(contact);
         }
     }
 }
