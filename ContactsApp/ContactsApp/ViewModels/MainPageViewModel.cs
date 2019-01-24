@@ -19,40 +19,37 @@ namespace ContactsApp.ViewModels
     {
         private readonly IContactService _contactService;
 
-        private IList<Contact> contacts;
+        private ObservableCollection<Contact> contacts;
+        private Contact selectedContact;
 
-        public ICommand AddContact { get; private set; }
-        public ICommand EditContact { get; private set; }
+        public MainPageViewModel(IContactService contactService)
+        {
+            _contactService = contactService;
 
-        ContactViewModel selectedContact;
+            MessagingCenter.Subscribe<SaveContactViewModel, Contact>(this, "addContact", (sender, arg) =>
+            {
+                Contacts.Add(arg);
+            });
+        }
 
-        public ContactViewModel SelectedContact
+        public ObservableCollection<Contact> Contacts
+        {
+            get { return contacts; }
+            set
+            {
+                SetPropertyValue(ref contacts, value);
+            }
+        }
+
+        public Contact SelectedContact
         {
             get { return selectedContact; }
             set { SetPropertyValue(ref selectedContact, value); }
         }
 
-
-        public MainPageViewModel(IContactService contactService)
-        {
-            _contactService = contactService;
-        }
-
-        //public MainPageViewModel(IContactsRepository contactsRepository)
-        //{
-        //    _contactsRepository = contactsRepository;
-        //    // Contacts = (async () => await _contactsRepository.GetContactsAsync());
-
-        //    Task.Run(async () =>
-        //    {
-        //        var contacts = await _contactsRepository.GetContactsAsync();
-
-        //        Contacts = new ObservableCollection<ContactViewModel>(contacts.Select(c => new ContactViewModel(c)));
-        //    });
-
-        //    AddContact = new Command(async () => await OnAddContact());
-        //    EditContact = new Command<ContactViewModel>(async (cvm) => await OnEditContact(cvm));
-        //}
+        public ICommand AddContact => new Command(async () => await OnAddContact());
+        public ICommand EditContact => new Command<Contact>(async (c) => await OnEditContact(c));
+        public ICommand DeleteContact => new Command<Contact>(async (c) => await OnDeleteContact(c));
 
         public override async Task InitializeAsync(object navigationData)
         {
@@ -65,35 +62,19 @@ namespace ContactsApp.ViewModels
 
         private async Task OnAddContact()
         {
-            Contacts.Add(new Contact());
-
-            //await App.Navigation.
+            await NavigationService.NavigateToAsync<SaveContactViewModel>();
         }
 
-        public IList<Contact> Contacts
+        private async Task OnEditContact(Contact contact)
         {
-            get { return contacts; }
-            set
-            {
-                SetPropertyValue(ref contacts, value);
-            }
+            SelectedContact = contact;
+            await NavigationService.NavigateToAsync<SaveContactViewModel>(contact);
         }
 
-        async Task SaveContact()
+        private async Task OnDeleteContact(Contact contact)
         {
-            IsBusy = true;
-            await Task.Delay(2000); // db call
-
-            IsBusy = false;
-
-            await Application.Current.MainPage.DisplayAlert("Save", "Contact saved", "OK");
-        }
-
-        private async Task OnEditContact(ContactViewModel cvm)
-        {
-            SelectedContact = cvm;
-            await DependencyService.Get<INavigationService>()
-                .NavigateToAsync<ContactViewModel>();
+            await _contactService.DeleteContactAsync(contact);
+            Contacts.Remove(contact);
         }
     }
 }

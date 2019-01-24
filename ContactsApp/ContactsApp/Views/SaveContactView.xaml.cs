@@ -1,5 +1,4 @@
-﻿using ContactsApp.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,16 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace ContactsApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddEditPage : ContentPage
+    public partial class SaveContactView : ContentPage
     {
-        public AddEditPage()
+        public SaveContactView()
         {
             InitializeComponent();
-        }
-
-        private void BtnSave_Clicked(object sender, EventArgs e)
-        {
-
         }
     }
 }

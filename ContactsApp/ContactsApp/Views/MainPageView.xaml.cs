@@ -15,12 +15,5 @@ namespace ContactsApp.Views
         {
             InitializeComponent();
         }
-
-        private async void LvContacts_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            var addEditPage = new AddEditPage();
-            addEditPage.BindingContext = new ContactViewModel((Contact)e.SelectedItem);
-            await Navigation.PushAsync(new AddEditPage());
-        }
     }
 }

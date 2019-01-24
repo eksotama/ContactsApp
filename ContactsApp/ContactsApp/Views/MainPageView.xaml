@@ -1,27 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:ContactsApp"
-             xmlns:viewModels="clr-namespace:ContactsApp.ViewModels"
              xmlns:viewModelBase="clr-namespace:ContactsApp.ViewModels.Base;assembly=ContactsApp"
              x:Class="ContactsApp.Views.MainPageView"
-             viewModelBase:ViewModelLocator.AutoWireViewModel="True">
-    <!--<ContentPage.BindingContext>
-        <viewModels:MainPageViewModel />
-    </ContentPage.BindingContext>-->
-
+             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
+             x:Name="RootPage"
+             Title="Main Page">
     <StackLayout Padding="20">
-        <ListView x:Name="lvContacts" 
-                  ItemsSource="{Binding Contacts}"
-                  ItemSelected="LvContacts_ItemSelected">
+        <ListView ItemsSource="{Binding Contacts}"
+                  SelectedItem="{Binding SelectedContact, Mode=TwoWay}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextCell Text="{Binding Name}" 
-                              Detail="{Binding Number}"/>
+                              Detail="{Binding Number}">
+                        <TextCell.ContextActions>
+                            <MenuItem Text="Edit"
+                                      Command="{Binding BindingContext.EditContact, Source={x:Reference Name=RootPage}}"
+                                      CommandParameter="{Binding}" />
+                            <MenuItem Text="Delete"
+                                      IsDestructive="True"
+                                      Command="{Binding BindingContext.DeleteContact, Source={x:Reference Name=RootPage}}"
+                                      CommandParameter="{Binding}" />
+                        </TextCell.ContextActions>
+                    </TextCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Text="Add Contact" Command="{Binding EditContact}" />
+        <Button Text="Add Contact" Command="{Binding AddContact}" />
     </StackLayout>
 
 </ContentPage>

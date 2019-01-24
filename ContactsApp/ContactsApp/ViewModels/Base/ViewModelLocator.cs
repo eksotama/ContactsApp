@@ -32,7 +32,7 @@ namespace ContactsApp.ViewModels.Base
 
             // View models - by default, TinyIoC will register concrete classes as multi-instance.
             _container.Register<MainPageViewModel>();
-            _container.Register<ContactViewModel>();
+            _container.Register<SaveContactViewModel>();
 
             // Services - by default, TinyIoC will register interface registrations as singletons.
             _container.Register<INavigationService, NavigationService>();
