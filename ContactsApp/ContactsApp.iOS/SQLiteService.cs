@@ -4,9 +4,9 @@ using ContactsApp.Services;
 using SQLite;
 using Xamarin.Forms;
 
-[assembly: Dependency(typeof(MvvmTest.iOS.SQLiteService))]
+[assembly: Dependency(typeof(ContactsApp.iOS.SQLiteService))]
 
-namespace MvvmTest.iOS
+namespace ContactsApp.iOS
 {
     public class SQLiteService : ISQLiteService
     {

@@ -2,9 +2,9 @@
 using SQLite;
 using Xamarin.Forms;
 
-[assembly: Dependency(typeof(MvvmTest.Droid.SQLiteService))]
+[assembly: Dependency(typeof(ContactsApp.Droid.SQLiteService))]
 
-namespace MvvmTest.Droid
+namespace ContactsApp.Droid
 {
     public class SQLiteService : ISQLiteService
     {

@@ -18,27 +18,20 @@ namespace ContactsApp.ViewModels
         private string name;
         private string number;
         private Contact _selectedContact;
+        private Contact editContact;
 
         public SaveContactViewModel(IContactService contactService)
         {
             _contactService = contactService;
         }
 
-        public string Name
+        public Contact EditContact
         {
-            get => name;
+            get => editContact;
             set
             {
-                SetPropertyValue(ref name, value);
-            }
-        }
-
-        public string Number
-        {
-            get => number;
-            set
-            {
-                SetPropertyValue(ref number, value);
+                editContact = value;
+                RaisePropertyChanged();
             }
         }
 
@@ -60,14 +53,15 @@ namespace ContactsApp.ViewModels
             {
                 SelectedContact = (Contact)navigationData;
 
-                Name = SelectedContact.Name;
-                Number = SelectedContact.Number;
+                EditContact = new Contact();
+                EditContact.Name = SelectedContact.Name;
+                EditContact.Number = SelectedContact.Number;
 
                 isNew = false;
             }
             else
             {
-                SelectedContact = new Contact();
+                SelectedContact = EditContact = new Contact();
             }
 
             await base.InitializeAsync(navigationData);
@@ -75,8 +69,8 @@ namespace ContactsApp.ViewModels
 
         private async Task OnSaveContact()
         {
-            SelectedContact.Name = Name;
-            SelectedContact.Number = Number;
+            SelectedContact.Name = EditContact.Name;
+            SelectedContact.Number = EditContact.Number;
 
             if (isNew == true)
             {
@@ -87,6 +81,7 @@ namespace ContactsApp.ViewModels
             {
                 await _contactService.UpdateContactAsync(SelectedContact);
             }
+            
         }
     }
 }

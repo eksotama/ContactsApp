@@ -9,11 +9,11 @@
         <StackLayout>
             <Entry HorizontalOptions="Center" 
                    Placeholder="Name" 
-                   Text="{Binding Name, Mode=TwoWay}" />
+                   Text="{Binding EditContact.Name, Mode=TwoWay}" />
 
             <Entry HorizontalOptions="Center" 
                    Placeholder="Phone Number"
-                   Text="{Binding Number, Mode=TwoWay}" />
+                   Text="{Binding EditContact.Number, Mode=TwoWay}" />
 
             <Button HorizontalOptions="Center" 
                     Text="Save"
