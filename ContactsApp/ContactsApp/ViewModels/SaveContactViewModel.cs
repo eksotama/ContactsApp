@@ -80,6 +80,7 @@ namespace ContactsApp.ViewModels
             else
             {
                 await _contactService.UpdateContactAsync(SelectedContact);
+                await NavigationService.GoBack();
             }
             
         }

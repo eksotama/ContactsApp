@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModelBase="clr-namespace:ContactsApp.ViewModels.Base;assembly=ContactsApp"
+             xmlns:carousel="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
+             x:Class="ContactsApp.Views.ContactCarouselView">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+            PositionIn="Center"
+            PositionOut="Center"
+            ScaleIn="1.2"
+            ScaleOut="0.8"
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+    <!--<StackLayout>-->
+        <carousel:CarouselViewControl BackgroundColor="White" HeightRequest="200"
+            ItemsSource="{Binding Contacts}"
+            VerticalOptions="CenterAndExpand"
+            HorizontalOptions="Center"
+            Margin="50">
+            <carousel:CarouselViewControl.ItemTemplate>
+                <DataTemplate>
+                    <Label Grid.Row="0"
+                        TextColor="Black"
+                        XAlign="Center" YAlign="Center"
+                        Text="{Binding Name}" />
+                </DataTemplate>
+            </carousel:CarouselViewControl.ItemTemplate>
+        </carousel:CarouselViewControl>
+    <!--</StackLayout>-->
+</pages:PopupPage>

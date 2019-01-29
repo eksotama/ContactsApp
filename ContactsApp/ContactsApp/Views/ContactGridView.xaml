@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
+             xmlns:viewModelBase="clr-namespace:ContactsApp.ViewModels.Base;assembly=ContactsApp"
+             x:Class="ContactsApp.Views.ContactGridView"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
+             Title="Contacts Grid View">
+    <ContentPage.Content>
+        <StackLayout>
+            <flv:FlowListView FlowColumnCount="4" SeparatorVisibility="None"
+                              FlowItemsSource="{Binding Contacts}">
+                <flv:FlowListView.FlowLoadingTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   TextColor="Black"
+                                   Text="{Binding Name}" />
+                        </ViewCell>
+                    </DataTemplate>
+                </flv:FlowListView.FlowLoadingTemplate>
+
+                <flv:FlowListView.FlowColumnTemplate>
+                    <DataTemplate>
+                        <Label HorizontalOptions="Fill" VerticalOptions="Fill" 
+						XAlign="Center" YAlign="Center" Text="Blah"/>
+                    </DataTemplate>
+                </flv:FlowListView.FlowColumnTemplate>
+            </flv:FlowListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

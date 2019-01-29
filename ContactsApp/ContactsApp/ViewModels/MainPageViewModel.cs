@@ -50,6 +50,7 @@ namespace ContactsApp.ViewModels
         public ICommand AddContact => new Command(async () => await OnAddContact());
         public ICommand EditContact => new Command<Contact>(async (c) => await OnEditContact(c));
         public ICommand DeleteContact => new Command<Contact>(async (c) => await OnDeleteContact(c));
+        public ICommand ShowCarousel => new Command(async () => await OnShowCarousel());
 
         public override async Task InitializeAsync(object navigationData)
         {
@@ -76,5 +77,11 @@ namespace ContactsApp.ViewModels
             await _contactService.DeleteContactAsync(contact);
             Contacts.Remove(contact);
         }
+
+        private async Task OnShowCarousel()
+        {
+            await NavigationService.NavigateModalAsync<ContactCarouselViewModel>();
+        }
+
     }
 }

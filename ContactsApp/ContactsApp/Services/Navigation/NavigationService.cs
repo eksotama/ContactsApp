@@ -7,12 +7,16 @@ using System.Threading.Tasks;
 using ContactsApp.ViewModels;
 using ContactsApp.ViewModels.Base;
 using ContactsApp.Views;
+using Rg.Plugins.Popup.Pages;
+using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
 
 namespace ContactsApp.Services
 {
     public class NavigationService : INavigationService
     {
+        private readonly Stack<Page> _navigationPageStack = new Stack<Page>();
+
         public BaseViewModel PreviousPageViewModel
         {
             get
@@ -103,6 +107,43 @@ namespace ContactsApp.Services
 
             Page page = Activator.CreateInstance(pageType) as Page;
             return page;
+        }
+
+        public async Task NavigateModalAsync<TViewModel>() where TViewModel : BaseViewModel
+        {
+            await NavigateModalAsync<TViewModel>(null);
+        }
+
+        public async Task NavigateModalAsync<TViewModel>(object parameter) where TViewModel : BaseViewModel
+        {
+            PopupPage page = (PopupPage)CreatePage(typeof(TViewModel), parameter);
+            //NavigationPage.SetHasNavigationBar(page, false);
+            var navigationPage = Application.Current.MainPage as CustomNavigationView;
+
+            //await navigationPage.Navigation.PushModalAsync(page);
+            await PopupNavigation.Instance.PushAsync(page);
+
+            await (page.BindingContext as BaseViewModel).InitializeAsync(parameter);
+
+            _navigationPageStack.Push(page);
+        }
+
+        public async Task GoBack()
+        {
+            var mainPage = Application.Current.MainPage as CustomNavigationView;
+
+            if (_navigationPageStack.Count > 1)
+            {
+               await  mainPage.Navigation.PopModalAsync();
+                _navigationPageStack.Pop();
+                return;
+            }
+
+            if(mainPage.Navigation.NavigationStack.Count > 1)
+            {
+                await mainPage.PopAsync();
+                return;
+            }
         }
     }
 }
